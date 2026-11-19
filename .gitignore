@@ -1,0 +1,6 @@
+data-mentah/
+dataset/
+*.pt
+runs/
+confusion_matrix.png
+__pycache__/

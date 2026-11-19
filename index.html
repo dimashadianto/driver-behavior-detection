@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deteksi Ekspresi Pengendara</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 30px auto; padding: 0 16px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+  .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; }
+  img { max-width: 100%; border-radius: 8px; }
+  .bar-wrap { background: #eee; border-radius: 6px; height: 18px; margin: 4px 0 10px; }
+  .bar { background: #2b7de9; height: 100%; border-radius: 6px; transition: width .4s; }
+  .top .bar { background: #1aa260; }
+  button { padding: 8px 16px; border: 0; border-radius: 6px; background: #2b7de9; color: #fff; cursor: pointer; }
+  pre { background: #f6f6f6; padding: 10px; border-radius: 6px; }
+</style>
+</head>
+<body>
+<h2>Klasifikasi Ekspresi Pengendara Mobil</h2>
+
+<div class="grid">
+  <div class="card">
+    <h3>Unggah Gambar</h3>
+    <input type="file" id="file" accept="image/*"><br><br>
+    <img id="preview" style="display:none"><br>
+    <button onclick="kirim()">Prediksi</button>
+  </div>
+
+  <div class="card">
+    <h3>Hasil</h3>
+    <div id="hasil">Belum ada prediksi.</div>
+    <pre id="teks" style="display:none"></pre>
+  </div>
+</div>
+
+<div class="card" style="margin-top:24px">
+  <h3>Confusion Matrix</h3>
+  <img id="cm" alt="Confusion matrix">
+</div>
+
+<script>
+const API = "http://localhost:8000";
+document.getElementById("cm").src = API + "/confusion-matrix";
+
+document.getElementById("file").addEventListener("change", e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const p = document.getElementById("preview");
+  p.src = URL.createObjectURL(f);
+  p.style.display = "block";
+});
+
+async function kirim() {
+  const f = document.getElementById("file").files[0];
+  if (!f) return alert("Pilih gambar dulu");
+
+  const fd = new FormData();
+  fd.append("file", f);
+
+  const hasil = document.getElementById("hasil");
+  hasil.textContent = "Memproses...";
+  try {
+    const res = await fetch(API + "/predict", { method: "POST", body: fd });
+    if (!res.ok) throw new Error((await res.json()).detail);
+    const data = await res.json();
+
+    let html = `<p><b>Prediksi: ${data.prediksi}</b></p>`;
+    let teks = "";
+    Object.entries(data.confidence).forEach(([k, v], i) => {
+      html += `<div class="${i === 0 ? "top" : ""}">${k}: ${v}%
+               <div class="bar-wrap"><div class="bar" style="width:${v}%"></div></div></div>`;
+      teks += `${k}: ${v.toFixed(2)}%\n`;
+    });
+    hasil.innerHTML = html;
+    const pre = document.getElementById("teks");
+    pre.textContent = teks + "Prediksi: " + data.prediksi;
+    pre.style.display = "block";
+  } catch (err) {
+    hasil.textContent = "Error: " + err.message;
+  }
+}
+</script>
+</body>
+</html>
