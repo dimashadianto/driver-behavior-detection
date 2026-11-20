@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tentang Sistem — DriverWatch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <div id="navbar"></div>
+
+    <header class="hero small">
+      <div class="wrap">
+        <h1>Bagaimana <span class="grad">DriverWatch</span> bekerja</h1>
+        <p class="lead">
+          Studi kasus klasifikasi ekspresi pengendara mobil dari gambar
+          menggunakan YOLOv8.
+        </p>
+      </div>
+    </header>
+
+    <section>
+      <div class="wrap">
+        <div class="title">
+          <h2>Kelas yang dikenali</h2>
+          <p>
+            Setiap gambar diklasifikasikan ke salah satu dari empat kondisi.
+          </p>
+        </div>
+        <div class="grid-auto">
+          <div class="card kelas" style="--c: #16a34a">
+            <div class="ico">🎯</div>
+            <h3>Fokus</h3>
+            <p class="muted">
+              Pengendara memperhatikan jalan dengan kondisi normal.
+            </p>
+          </div>
+          <div class="card kelas" style="--c: #d97706">
+            <div class="ico">😴</div>
+            <h3>Mengantuk</h3>
+            <p class="muted">
+              Tampak tanda kelelahan seperti mata tertutup atau kepala
+              tertunduk.
+            </p>
+          </div>
+          <div class="card kelas" style="--c: #dc2626">
+            <div class="ico">🚬</div>
+            <h3>Merokok</h3>
+            <p class="muted">
+              Pengendara memegang atau menghisap rokok saat berkendara.
+            </p>
+          </div>
+          <div class="card kelas" style="--c: #7c3aed">
+            <div class="ico">📱</div>
+            <h3>Dengan HP</h3>
+            <p class="muted">Pengendara menggunakan ponsel saat berkendara.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="title">
+          <h2>Alur kerja</h2>
+          <p>Dari data mentah sampai hasil di browser.</p>
+        </div>
+        <div class="steps">
+          <div class="card step">
+            <div class="num">1</div>
+            <div>
+              <h3>Pengumpulan data</h3>
+              <p class="muted">
+                Gambar pengendara dikelompokkan ke empat folder sesuai kelasnya
+                dan disimpan di Google Drive.
+              </p>
+            </div>
+          </div>
+          <div class="card step">
+            <div class="num">2</div>
+            <div>
+              <h3>Pra-pemrosesan</h3>
+              <p class="muted">
+                Koreksi rotasi, penyeragaman format ke JPG RGB, perkecil ukuran,
+                buang file rusak dan duplikat, lalu bagi menjadi data latih,
+                validasi, dan uji.
+              </p>
+            </div>
+          </div>
+          <div class="card step">
+            <div class="num">3</div>
+            <div>
+              <h3>Pelatihan model</h3>
+              <p class="muted">
+                YOLOv8-cls dilatih dengan transfer learning. Keluaran softmax
+                membuat confidence semua kelas berjumlah 100%.
+              </p>
+            </div>
+          </div>
+          <div class="card step">
+            <div class="num">4</div>
+            <div>
+              <h3>Evaluasi</h3>
+              <p class="muted">
+                Model diuji pada data test yang terpisah. Hasilnya berupa
+                akurasi, precision, recall, F1-score, dan confusion matrix.
+              </p>
+            </div>
+          </div>
+          <div class="card step">
+            <div class="num">5</div>
+            <div>
+              <h3>Deteksi lewat web</h3>
+              <p class="muted">
+                Backend FastAPI memuat model dan menyajikan halaman ini. Unggah
+                gambar untuk melihat prediksi dan confidence tiap kelas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap" style="margin-top: 30px">
+      <p class="note">
+        <b>Catatan:</b> sistem ini adalah studi kasus akademik. Akurasinya
+        bergantung pada kualitas dan keragaman data latih, sehingga tidak
+        dimaksudkan sebagai alat keselamatan berkendara.
+      </p>
+      <div class="cta"><a class="btn" href="/">Coba deteksi gambar</a></div>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="/static/js/layout.js"></script>
+  </body>
+</html>
