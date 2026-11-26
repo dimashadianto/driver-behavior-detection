@@ -1,106 +1,168 @@
 <!doctype html>
 <html lang="id">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DriverWatch — Deteksi Ekspresi Pengendara</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
     />
+
     <link rel="stylesheet" href="/static/css/style.css" />
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="navbar"></div>
 
     <header class="hero">
-      <div class="wrap">
-        <span class="badge">YOLOv8 Image Classification</span>
-        <h1>
-          Kenali kondisi pengendara <span class="grad">secara otomatis</span>
-        </h1>
-        <p class="lead">
-          Unggah foto pengendara di dalam mobil. Sistem mengklasifikasikannya ke
-          4 kondisi lengkap dengan nilai confidence setiap kelas.
-        </p>
-        <div class="cta">
-          <a class="btn" href="#deteksi" data-scroll="#deteksi"
-            >Coba sekarang</a
-          >
-          <a class="btn ghost" href="#evaluasi" data-scroll="#evaluasi"
-            >Lihat evaluasi model</a
-          >
+        <div class="wrap">
+            <span class="badge">YOLOv8 Image Classification</span>
+
+            <h1>
+                Kenali kondisi pengendara
+                <span class="grad">secara otomatis</span>
+            </h1>
+
+            <p class="lead">
+                Unggah foto pengendara di dalam mobil. Sistem mengklasifikasikannya
+                ke 4 kondisi lengkap dengan nilai confidence setiap kelas.
+            </p>
+
+            <div class="cta">
+                <a class="btn" href="#deteksi" data-scroll="#deteksi">
+                    Coba sekarang
+                </a>
+
+                <a class="btn ghost" href="#evaluasi" data-scroll="#evaluasi">
+                    Lihat evaluasi model
+                </a>
+            </div>
+
+            <div class="chips">
+                <div><b>4</b><span>Kelas</span></div>
+                <div><b id="hAcc">–</b><span>Akurasi data test</span></div>
+                <div><b>YOLOv8</b><span>Model</span></div>
+            </div>
         </div>
-        <div class="chips">
-          <div><b>4</b><span>Kelas</span></div>
-          <div><b id="hAcc">–</b><span>Akurasi data test</span></div>
-          <div><b>YOLOv8</b><span>Model</span></div>
-        </div>
-      </div>
     </header>
 
     <section id="deteksi">
-      <div class="wrap">
-        <div class="title">
-          <h2>Deteksi Gambar</h2>
-          <p>
-            Format apa pun diterima: JPG, PNG, WEBP, BMP, HEIC, dan lainnya.
-          </p>
+        <div class="wrap">
+            <div class="title">
+                <h2>Deteksi Gambar</h2>
+                <p>
+                    Format apa pun diterima: JPG, PNG, WEBP, BMP, HEIC, dan lainnya.
+                </p>
+            </div>
+
+            <!-- BAGIAN FOTO -->
+            <div class="grid2 detection-images">
+
+                <!-- FOTO UPLOAD -->
+                <div class="card image-card">
+                    <h3>1. Unggah gambar</h3>
+
+                    <div
+                        class="drop"
+                        id="drop"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Pilih gambar pengendara"
+                    >
+                        <div id="ph">
+                            <div class="ico">📷</div>
+                            <p><b>Klik</b> atau seret gambar ke sini</p>
+                            <small>Maksimal 15 MB</small>
+                        </div>
+
+                        <img
+                            id="preview"
+                            alt="Pratinjau gambar pengendara"
+                            style="display:none;"
+                        />
+                    </div>
+
+                    <input
+                        type="file"
+                        id="file"
+                        accept="image/*"
+                        style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"
+                    />
+
+                    <div class="actions">
+                        <button class="btn" id="go" disabled>
+                            Prediksi
+                        </button>
+
+                        <button class="btn ghost" id="reset">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FOTO HASIL ANOTASI -->
+                <div class="card image-card">
+                    <h3>2. Foto hasil prediksi</h3>
+
+                    <div id="hasilGambar" class="result-image-area">
+                        <div class="empty">
+                            Foto hasil prediksi akan tampil di sini.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HASIL KLASIFIKASI DI TENGAH -->
+            <div class="card prediction-card">
+                <h3>Hasil Klasifikasi</h3>
+
+                <div id="hasil">
+                    <div class="empty">
+                        Hasil prediksi akan tampil di sini.
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="grid2">
-          <div class="card">
-            <h3>1. Unggah gambar</h3>
-            <div class="drop" id="drop">
-              <div id="ph">
-                <div class="ico">📷</div>
-                <p><b>Klik</b> atau seret gambar ke sini</p>
-                <small>Maksimal 15 MB</small>
-              </div>
-              <img id="preview" alt="Pratinjau" />
-            </div>
-            <input type="file" id="file" accept="image/*" hidden />
-            <div class="actions">
-              <button class="btn" id="go" disabled>Prediksi</button>
-              <button class="btn ghost" id="reset">Reset</button>
-            </div>
-          </div>
-          <div class="card">
-            <h3>2. Hasil prediksi</h3>
-            <div id="hasil">
-              <div class="empty">Hasil prediksi akan tampil di sini.</div>
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
+    <!-- EVALUASI MODEL -->
     <section id="evaluasi">
-      <div class="wrap">
-        <div class="title">
-          <h2>Evaluasi Model</h2>
-          <p>Dihitung pada data test yang tidak dipakai saat pelatihan.</p>
+        <div class="wrap">
+            <div class="title">
+                <h2>Evaluasi Model</h2>
+                <p>
+                    Dihitung pada data test yang tidak dipakai saat pelatihan.
+                </p>
+            </div>
+
+            <div id="evalBox">
+                <div class="card empty">Memuat evaluasi...</div>
+            </div>
         </div>
-        <div id="evalBox"><div class="card empty">Memuat evaluasi...</div></div>
-      </div>
     </section>
 
+    <!-- MODAL CONFUSION MATRIX -->
     <dialog id="modal">
-      <div class="modal-body">
-        <div class="modal-head">
-          <h3>Confusion Matrix (Data Test)</h3>
-          <button class="x" id="tutup" aria-label="Tutup">✕</button>
+        <div class="modal-body">
+            <div class="modal-head">
+                <h3>Confusion Matrix (Data Test)</h3>
+                <button class="x" id="tutup" aria-label="Tutup">✕</button>
+            </div>
+
+            <img id="cmImg" alt="Confusion matrix" />
+
+            <p id="cmErr" class="muted" hidden>
+                Gambar confusion_matrix.png belum ada di folder model/.
+            </p>
         </div>
-        <img id="cmImg" alt="Confusion matrix" />
-        <p id="cmErr" class="muted" hidden>
-          Gambar confusion_matrix.png belum ada di folder model/.
-        </p>
-      </div>
     </dialog>
 
     <div id="footer"></div>
 
     <script src="/static/js/layout.js"></script>
     <script src="/static/js/home.js"></script>
-  </body>
+</body>
 </html>

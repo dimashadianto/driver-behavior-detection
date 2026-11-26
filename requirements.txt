@@ -4,3 +4,5 @@ uvicorn
 python-multipart
 pillow
 pillow-heif
+opencv-python-headless
+mediapipe==1.2.3

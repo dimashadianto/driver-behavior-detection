@@ -639,3 +639,149 @@ footer li a:hover {
     font-size: 13px;
     color: var(--muted)
 }
+
+
+
+/* =====================================
+   LAYOUT DETEKSI DRIVERWATCH
+===================================== */
+
+.detection-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.image-card {
+    min-width: 0;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.image-card .drop {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+/* Foto yang diunggah */
+.image-card .drop img {
+    display: none;
+    width: auto;
+    max-width: 100%;
+    max-height: 360px;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+/* Area foto hasil prediksi */
+.result-image-area {
+    width: 100%;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 16px;
+    gap: 10px;
+}
+
+.result-image-area .jumlah-wajah {
+    width: 100%;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* Ukuran foto hasil prediksi disamakan dengan foto unggahan */
+.result-image-area img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 360px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+}
+
+.result-image-area .empty {
+    width: 100%;
+}
+
+/* =====================================
+   HASIL KLASIFIKASI
+===================================== */
+
+.prediction-card {
+    width: 100%;
+    max-width: 850px;
+    margin: 24px auto 0;
+}
+
+.prediction-card > h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.prediction-card .top {
+    justify-content: center;
+}
+
+.prediction-card .row {
+    width: 100%;
+}
+
+.prediction-card pre {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width: 820px) {
+    .detection-images {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .image-card .drop {
+        min-height: 220px;
+    }
+
+    .image-card .drop img {
+        max-height: 320px;
+    }
+
+    .result-image-area {
+        min-height: 220px;
+    }
+
+    .result-image-area img {
+        max-height: 320px;
+    }
+
+    .prediction-card {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-card .drop img,
+    .result-image-area img {
+        max-height: 280px;
+    }
+
+    .prediction-card {
+        padding: 16px;
+    }
+}
